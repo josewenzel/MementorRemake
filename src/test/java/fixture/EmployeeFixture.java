@@ -11,6 +11,11 @@ public class EmployeeFixture {
         id = UUID.randomUUID();
     }
 
+    public EmployeeFixture withId(UUID id) {
+        this.id = id;
+        return this;
+    }
+
     public Employee build() {
         return new Employee(id);
     }
