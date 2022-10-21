@@ -19,7 +19,9 @@ import static org.mockito.Mockito.when;
 class MentoringServiceTest {
     @Mock
     EmployeeRepository employeeRepository;
-    private MentoringService mentoringService;
+    MentoringService mentoringService;
+    Employee anEmployee = new EmployeeFixture().build();
+    Employee mentor = new EmployeeFixture().build();
 
     @BeforeEach
     void setUp() {
@@ -28,9 +30,6 @@ class MentoringServiceTest {
 
     @Test
     public void requests_employee_and_mentor_to_store_to_add_a_mentor() {
-        Employee anEmployee = new EmployeeFixture().build();
-        Employee mentor = new EmployeeFixture().build();
-
         when(employeeRepository.get(mentor)).thenReturn(mentor);
         mentoringService.addMentor(anEmployee, mentor);
 
@@ -44,10 +43,8 @@ class MentoringServiceTest {
 
     @Test
     public void disallow_to_add_a_mentor_to_employee_if_mentor_does_not_exist() {
-        Employee anEmployee = new EmployeeFixture().build();
-        Employee mentor = new EmployeeFixture().build();
-
         when(employeeRepository.get(mentor)).thenReturn(null);
+
         assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
                 .isInstanceOf(MentorDoesNotExistException.class);
     }
