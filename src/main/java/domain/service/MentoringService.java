@@ -11,10 +11,12 @@ public class MentoringService {
     }
 
     public void addMentor(Employee employee, Employee mentor) {
-        throw new UnsupportedOperationException("Not Implemented");
+        employee.addMentor(mentor);
+        employeeRepository.update(employee, employee);
     }
 
     public Employee getMentorOf(Employee employee) {
-        throw new UnsupportedOperationException("Not Implemented");
+        Employee requestedEmployee = employeeRepository.get(employee);
+        return requestedEmployee.mentor();
     }
 }

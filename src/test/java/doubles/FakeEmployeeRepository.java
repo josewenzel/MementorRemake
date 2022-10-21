@@ -18,4 +18,10 @@ public class FakeEmployeeRepository implements EmployeeRepository {
     public Employee get(Employee employee) {
         return employees.get(employee.id());
     }
+
+    @Override
+    public void update(Employee oldEmployee, Employee newEmployee) {
+        employees.remove(oldEmployee.id());
+        employees.put(newEmployee.id(), newEmployee);
+    }
 }

@@ -20,9 +20,14 @@ class MentoringServiceTest {
     public void requests_employee_and_mentor_to_store_to_add_a_mentor() {
         MentoringService mentoringService = new MentoringService(employeeRepository);
         Employee anEmployee = new EmployeeFixture().build();
+        Employee mentor = new EmployeeFixture().build();
 
-        mentoringService.getMentorOf(anEmployee);
+        mentoringService.addMentor(anEmployee, mentor);
 
-        then(employeeRepository).should().get(anEmployee);
+        Employee mentoredEmployee = new EmployeeFixture()
+                .withId(anEmployee.id())
+                .withPersonalInformation(anEmployee.personalInformation())
+                .withMentor(mentor).build();
+        then(employeeRepository).should().update(anEmployee, mentoredEmployee);
     }
 }
