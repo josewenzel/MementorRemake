@@ -16,12 +16,12 @@ public class EmployeeService {
     }
 
     public void addNewEmployee(Employee employee) {
-        if (!isNewEmployee(employee))
+        if (isAMember(employee))
             throw new DuplicateEmployeeException();
         employeeRepository.add(employee);
     }
 
-    private boolean isNewEmployee(Employee employee) {
-        return getEmployee(employee) == null;
+    private boolean isAMember(Employee employee) {
+        return getEmployee(employee) != null;
     }
 }
