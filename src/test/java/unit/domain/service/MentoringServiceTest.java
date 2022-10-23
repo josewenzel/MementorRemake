@@ -22,7 +22,8 @@ class MentoringServiceTest {
     @Mock
     EmployeeRepository employeeRepository;
     MentoringService mentoringService;
-    Employee anEmployee = new EmployeeFixture().build();
+
+    Employee employeeWithMentor = new EmployeeFixture().build();
     Employee mentor = new EmployeeFixture().build();
 
     @BeforeEach
@@ -33,40 +34,54 @@ class MentoringServiceTest {
     @Test
     public void requests_to_add_a_mentor_to_employee() {
         when(employeeRepository.get(mentor)).thenReturn(mentor);
-        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+        when(employeeRepository.get(employeeWithMentor)).thenReturn(employeeWithMentor);
 
-        mentoringService.addMentor(anEmployee, mentor);
+        mentoringService.addMentor(employeeWithMentor, mentor);
 
         Employee mentoredEmployee = new EmployeeFixture()
-                .withId(anEmployee.id())
-                .withPersonalInformation(anEmployee.personalInformation())
+                .withId(employeeWithMentor.id())
+                .withPersonalInformation(employeeWithMentor.personalInformation())
                 .withMentor(mentor).build();
-        then(employeeRepository).should().update(anEmployee.id(), mentoredEmployee);
+        then(employeeRepository).should().update(employeeWithMentor.id(), mentoredEmployee);
     }
 
     @Test
     public void disallow_mentor_a_non_existent_employee() {
-        when(employeeRepository.get(anEmployee)).thenReturn(null);
+        when(employeeRepository.get(employeeWithMentor)).thenReturn(null);
 
-        assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
+        assertThatThrownBy(() -> mentoringService.addMentor(employeeWithMentor, mentor))
                 .isInstanceOf(EmployeeDoesNotExistsException.class);
     }
 
     @Test
     public void disallow_to_be_mentored_by_a_non_existent_mentor() {
-        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+        when(employeeRepository.get(employeeWithMentor)).thenReturn(employeeWithMentor);
         when(employeeRepository.get(mentor)).thenReturn(null);
 
-        assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
+        assertThatThrownBy(() -> mentoringService.addMentor(employeeWithMentor, mentor))
                 .isInstanceOf(MentorDoesNotExistException.class);
     }
 
     @Test
     public void disallow_to_mentor_yourself() {
-        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+        when(employeeRepository.get(employeeWithMentor)).thenReturn(employeeWithMentor);
 
-        assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, anEmployee))
+        assertThatThrownBy(() -> mentoringService.addMentor(employeeWithMentor, employeeWithMentor))
                 .isInstanceOf(SelfMentorException.class);
     }
 
+    @Test
+    public void request_to_remove_mentoring_relationship() {
+        Employee mentor = new EmployeeFixture().build();
+        Employee employeeWithMentor = new EmployeeFixture().withMentor(mentor).build();
+        when(employeeRepository.get(employeeWithMentor)).thenReturn(employeeWithMentor);
+
+        mentoringService.removeMentor(employeeWithMentor);
+
+        Employee employeeWithoutMentor = new EmployeeFixture()
+                .withId(employeeWithMentor.id())
+                .withPersonalInformation(employeeWithMentor.personalInformation())
+                .withMentor(null).build();
+        then(employeeRepository).should().update(employeeWithMentor.id(), employeeWithoutMentor);
+    }
 }

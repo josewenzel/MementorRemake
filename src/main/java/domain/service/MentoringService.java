@@ -15,8 +15,8 @@ public class MentoringService {
 
     public void addMentor(Employee employee, Employee mentor) {
         // TODO move to validation objects
-        if (!isAMember(employee)) throw new EmployeeDoesNotExistsException();
-        if (!isAMember(mentor)) throw new MentorDoesNotExistException();
+        if (isNotAMember(employee)) throw new EmployeeDoesNotExistsException();
+        if (isNotAMember(mentor)) throw new MentorDoesNotExistException();
         if (employee == mentor) throw new SelfMentorException();
 
         employee.addMentor(mentor);
@@ -28,7 +28,14 @@ public class MentoringService {
         return requestedEmployee.mentor();
     }
 
-    private boolean isAMember(Employee employee) {
-        return employeeRepository.get(employee) != null;
+    private boolean isNotAMember(Employee employee) {
+        return employeeRepository.get(employee) == null;
+    }
+
+    public void removeMentor(Employee employee) {
+        if (isNotAMember(employee)) throw new EmployeeDoesNotExistsException();
+
+        employee.removeMentor();
+        employeeRepository.update(employee.id(), employee);
     }
 }

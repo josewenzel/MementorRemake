@@ -18,6 +18,10 @@ public final class Employee {
         this.mentor = mentor;
     }
 
+    public void removeMentor() {
+        this.mentor = null;
+    }
+
     public UUID id() {
         return id;
     }

@@ -7,13 +7,11 @@ import doubles.FakeEmployeeRepository;
 import fixture.EmployeeFixture;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MentoringServiceFeatureTest {
     private final Employee employee = new EmployeeFixture().build();
-    private final Employee mentor = new EmployeeFixture().withId(UUID.randomUUID()).build();
+    private final Employee mentor = new EmployeeFixture().build();
 
     @Test
     public void adds_a_mentor_to_an_existing_employee() {
@@ -24,6 +22,18 @@ public class MentoringServiceFeatureTest {
 
         Employee mentorOfEmployee = mentoringService.getMentorOf(employee);
         assertThat(mentorOfEmployee).isEqualTo(mentor);
+    }
+
+    @Test
+    public void removes_a_mentor_to_an_existing_employee() {
+        EmployeeRepository employeeRepository = repositoryWithEmployees();
+        MentoringService mentoringService = new MentoringService(employeeRepository);
+        mentoringService.addMentor(employee, mentor);
+
+        mentoringService.removeMentor(employee);
+
+        Employee mentorOfEmployee = mentoringService.getMentorOf(employee);
+        assertThat(mentorOfEmployee).isNull();
     }
 
     private EmployeeRepository repositoryWithEmployees() {
