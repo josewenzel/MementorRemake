@@ -32,7 +32,8 @@ class MentoringServiceTest {
 
     @Test
     public void requests_to_add_a_mentor_to_employee() {
-        givenEmployeeAndMentorExist();
+        when(employeeRepository.get(mentor)).thenReturn(mentor);
+        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
 
         mentoringService.addMentor(anEmployee, mentor);
 
@@ -45,7 +46,7 @@ class MentoringServiceTest {
 
     @Test
     public void disallow_mentor_a_non_existent_employee() {
-        givenEmployeeDoesNotExist();
+        when(employeeRepository.get(anEmployee)).thenReturn(null);
 
         assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
                 .isInstanceOf(EmployeeDoesNotExistsException.class);
@@ -53,7 +54,8 @@ class MentoringServiceTest {
 
     @Test
     public void disallow_to_be_mentored_by_a_non_existent_mentor() {
-        givenMentorDoesNotExist();
+        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+        when(employeeRepository.get(mentor)).thenReturn(null);
 
         assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
                 .isInstanceOf(MentorDoesNotExistException.class);
@@ -67,17 +69,4 @@ class MentoringServiceTest {
                 .isInstanceOf(SelfMentorException.class);
     }
 
-    private void givenEmployeeDoesNotExist() {
-        when(employeeRepository.get(anEmployee)).thenReturn(null);
-    }
-
-    private void givenMentorDoesNotExist() {
-        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
-        when(employeeRepository.get(mentor)).thenReturn(null);
-    }
-
-    private void givenEmployeeAndMentorExist() {
-        when(employeeRepository.get(mentor)).thenReturn(mentor);
-        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
-    }
 }
