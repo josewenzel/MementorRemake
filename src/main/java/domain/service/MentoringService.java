@@ -13,10 +13,11 @@ public class MentoringService {
     }
 
     public void addMentor(Employee employee, Employee mentor) {
-        if (isNotAMember(mentor))
-            throw new MentorDoesNotExistException();
         if (isNotAMember(employee))
             throw new EmployeeDoesNotExistsException();
+        if (isNotAMember(mentor))
+            throw new MentorDoesNotExistException();
+
         employee.addMentor(mentor);
         employeeRepository.update(employee, employee);
     }

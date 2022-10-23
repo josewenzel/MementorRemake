@@ -1,5 +1,6 @@
 package unit.domain.service;
 
+import domain.exception.EmployeeDoesNotExistsException;
 import domain.exception.MentorDoesNotExistException;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
@@ -30,22 +31,44 @@ class MentoringServiceTest {
 
     @Test
     public void requests_employee_and_mentor_to_store_to_add_a_mentor() {
-        when(employeeRepository.get(mentor)).thenReturn(mentor);
+        givenEmployeeAndMentorExist();
+
         mentoringService.addMentor(anEmployee, mentor);
 
         Employee mentoredEmployee = new EmployeeFixture()
                 .withId(anEmployee.id())
                 .withPersonalInformation(anEmployee.personalInformation())
                 .withMentor(mentor).build();
-
         then(employeeRepository).should().update(anEmployee, mentoredEmployee);
     }
 
     @Test
+    public void disallow_to_add_a_mentor_to_employee_if_employee_does_not_exist() {
+        givenEmployeeDoesNotExist();
+
+        assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
+                .isInstanceOf(EmployeeDoesNotExistsException.class);
+    }
+
+    @Test
     public void disallow_to_add_a_mentor_to_employee_if_mentor_does_not_exist() {
-        when(employeeRepository.get(mentor)).thenReturn(null);
+        givenMentorDoesNotExist();
 
         assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
                 .isInstanceOf(MentorDoesNotExistException.class);
+    }
+
+    private void givenEmployeeDoesNotExist() {
+        when(employeeRepository.get(anEmployee)).thenReturn(null);
+    }
+
+    private void givenMentorDoesNotExist() {
+        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+        when(employeeRepository.get(mentor)).thenReturn(null);
+    }
+
+    private void givenEmployeeAndMentorExist() {
+        when(employeeRepository.get(mentor)).thenReturn(mentor);
+        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
     }
 }
