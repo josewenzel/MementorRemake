@@ -2,6 +2,7 @@ package unit.domain.service;
 
 import domain.exception.EmployeeDoesNotExistsException;
 import domain.exception.MentorDoesNotExistException;
+import domain.exception.SelfMentorException;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
 import domain.service.MentoringService;
@@ -30,7 +31,7 @@ class MentoringServiceTest {
     }
 
     @Test
-    public void requests_employee_and_mentor_to_store_to_add_a_mentor() {
+    public void requests_to_add_a_mentor_to_employee() {
         givenEmployeeAndMentorExist();
 
         mentoringService.addMentor(anEmployee, mentor);
@@ -43,7 +44,7 @@ class MentoringServiceTest {
     }
 
     @Test
-    public void disallow_to_add_a_mentor_to_employee_if_employee_does_not_exist() {
+    public void disallow_mentor_a_non_existent_employee() {
         givenEmployeeDoesNotExist();
 
         assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
@@ -51,11 +52,19 @@ class MentoringServiceTest {
     }
 
     @Test
-    public void disallow_to_add_a_mentor_to_employee_if_mentor_does_not_exist() {
+    public void disallow_to_be_mentored_by_a_non_existent_mentor() {
         givenMentorDoesNotExist();
 
         assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, mentor))
                 .isInstanceOf(MentorDoesNotExistException.class);
+    }
+
+    @Test
+    public void disallow_to_mentor_yourself() {
+        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+
+        assertThatThrownBy(() -> mentoringService.addMentor(anEmployee, anEmployee))
+                .isInstanceOf(SelfMentorException.class);
     }
 
     private void givenEmployeeDoesNotExist() {
