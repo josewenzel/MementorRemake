@@ -39,7 +39,7 @@ class MentoringServiceTest {
                 .withId(anEmployee.id())
                 .withPersonalInformation(anEmployee.personalInformation())
                 .withMentor(mentor).build();
-        then(employeeRepository).should().update(anEmployee, mentoredEmployee);
+        then(employeeRepository).should().update(anEmployee.id(), mentoredEmployee);
     }
 
     @Test
