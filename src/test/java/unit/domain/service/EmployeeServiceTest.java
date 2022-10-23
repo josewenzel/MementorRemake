@@ -30,7 +30,7 @@ class EmployeeServiceTest {
 
     @Test
     public void request_an_employee_to_be_stored() {
-        employeeService.addNewEmployee(anEmployee);
+        employeeService.addEmployee(anEmployee);
 
         then(employeeRepository).should().add(anEmployee);
     }
@@ -46,7 +46,7 @@ class EmployeeServiceTest {
     public void throw_an_exception_if_trying_to_store_a_duplicated_employee() {
         when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
 
-        assertThatThrownBy(() -> employeeService.addNewEmployee(anEmployee))
+        assertThatThrownBy(() -> employeeService.addEmployee(anEmployee))
                 .isInstanceOf(DuplicateEmployeeException.class);
     }
 }

@@ -13,8 +13,8 @@ public class MentoringService {
     }
 
     public void addMentor(Employee employee, Employee mentor) {
-        if (isNotAMember(employee)) throw new EmployeeDoesNotExistsException();
-        if (isNotAMember(mentor)) throw new MentorDoesNotExistException();
+        if (!isAMember(employee)) throw new EmployeeDoesNotExistsException();
+        if (!isAMember(mentor)) throw new MentorDoesNotExistException();
 
         employee.addMentor(mentor);
         employeeRepository.update(employee.id(), employee);
@@ -25,7 +25,7 @@ public class MentoringService {
         return requestedEmployee.mentor();
     }
 
-    private boolean isNotAMember(Employee employee) {
-        return employeeRepository.get(employee) == null;
+    private boolean isAMember(Employee employee) {
+        return employeeRepository.get(employee) != null;
     }
 }

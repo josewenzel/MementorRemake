@@ -2,6 +2,7 @@ package fixture;
 
 import domain.model.Employee;
 import domain.model.PersonalInformation;
+import domain.model.Seniority;
 
 import java.util.UUID;
 
@@ -12,7 +13,7 @@ public class EmployeeFixture {
 
     public EmployeeFixture() {
         id = UUID.randomUUID();
-        personalInformation = new PersonalInformation("Bilbo", "Baggins");
+        personalInformation = new PersonalInformation("Bilbo", "Baggins", Seniority.Craftsperson);
     }
 
     public EmployeeFixture withId(UUID id) {

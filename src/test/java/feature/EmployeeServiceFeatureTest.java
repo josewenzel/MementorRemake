@@ -18,7 +18,7 @@ public class EmployeeServiceFeatureTest {
         EmployeeRepository employeeRepository = new FakeEmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
 
-        employeeService.addNewEmployee(employee);
+        employeeService.addEmployee(employee);
         Employee retrievedEmployee = employeeService.getEmployee(employee);
 
         assertThat(retrievedEmployee).isEqualTo(employee);
@@ -30,9 +30,9 @@ public class EmployeeServiceFeatureTest {
         EmployeeRepository employeeRepository = new FakeEmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
 
-        employeeService.addNewEmployee(employee);
+        employeeService.addEmployee(employee);
 
-        assertThatThrownBy(() -> employeeService.addNewEmployee(employee))
+        assertThatThrownBy(() -> employeeService.addEmployee(employee))
                 .isInstanceOf(DuplicateEmployeeException.class);
     }
 }
