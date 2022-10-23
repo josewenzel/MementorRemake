@@ -20,8 +20,8 @@ public class FakeEmployeeRepository implements EmployeeRepository {
     }
 
     @Override
-    public void update(UUID oldEmployeeId, Employee newEmployee) {
-        employees.remove(oldEmployeeId);
-        employees.put(newEmployee.id(), newEmployee);
+    public void update(UUID employeeId, Employee updatedEmployee) {
+        employees.remove(employeeId);
+        employees.put(updatedEmployee.id(), updatedEmployee);
     }
 }

@@ -9,5 +9,5 @@ public interface EmployeeRepository {
 
     Employee get(Employee employee);
 
-    void update(UUID oldEmployeeId, Employee newEmployee);
+    void update(UUID employeeId, Employee updatedEmployee);
 }
