@@ -15,12 +15,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class EmployeeServiceFeatureTest {
 
     private final Employee AN_EMPLOYEE = new EmployeeFixture().build();
-    private EmployeeRepository employeeRepository;
     private EmployeeService employeeService;
 
     @BeforeEach
     void setUp() {
-        employeeRepository = new FakeEmployeeRepository();
+        EmployeeRepository employeeRepository = new FakeEmployeeRepository();
         employeeService = new EmployeeService(employeeRepository);
     }
 
