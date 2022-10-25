@@ -24,7 +24,15 @@ class MentoringServiceTest {
     MentoringService mentoringService;
 
     Employee employeeWithMentor = new EmployeeFixture().build();
+    private final Employee employeeWithoutMentor = new EmployeeFixture()
+            .withId(employeeWithMentor.id())
+            .withPersonalInformation(employeeWithMentor.personalInformation())
+            .withMentor(null).build();
     Employee mentor = new EmployeeFixture().build();
+    private final Employee mentoredEmployee = new EmployeeFixture()
+            .withId(employeeWithMentor.id())
+            .withPersonalInformation(employeeWithMentor.personalInformation())
+            .withMentor(mentor).build();
 
     @BeforeEach
     void setUp() {
@@ -38,10 +46,6 @@ class MentoringServiceTest {
 
         mentoringService.addMentor(employeeWithMentor, mentor);
 
-        Employee mentoredEmployee = new EmployeeFixture()
-                .withId(employeeWithMentor.id())
-                .withPersonalInformation(employeeWithMentor.personalInformation())
-                .withMentor(mentor).build();
         then(employeeRepository).should().update(employeeWithMentor.id(), mentoredEmployee);
     }
 
@@ -72,16 +76,10 @@ class MentoringServiceTest {
 
     @Test
     public void request_to_remove_mentoring_relationship() {
-        Employee mentor = new EmployeeFixture().build();
-        Employee employeeWithMentor = new EmployeeFixture().withMentor(mentor).build();
         when(employeeRepository.get(employeeWithMentor)).thenReturn(employeeWithMentor);
 
         mentoringService.removeMentor(employeeWithMentor);
 
-        Employee employeeWithoutMentor = new EmployeeFixture()
-                .withId(employeeWithMentor.id())
-                .withPersonalInformation(employeeWithMentor.personalInformation())
-                .withMentor(null).build();
         then(employeeRepository).should().update(employeeWithMentor.id(), employeeWithoutMentor);
     }
 }
