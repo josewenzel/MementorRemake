@@ -10,4 +10,6 @@ public interface EmployeeRepository {
     Employee get(Employee employee);
 
     void update(UUID employeeId, Employee updatedEmployee);
+
+    void remove(Employee employee);
 }

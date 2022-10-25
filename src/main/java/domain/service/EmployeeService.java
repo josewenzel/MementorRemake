@@ -21,6 +21,10 @@ public class EmployeeService {
         employeeRepository.add(employee);
     }
 
+    public void removeEmployee(Employee employee) {
+        employeeRepository.remove(employee);
+    }
+
     private boolean isAMember(Employee employee) {
         return employeeRepository.get(employee) != null;
     }

@@ -24,4 +24,9 @@ public class FakeEmployeeRepository implements EmployeeRepository {
         employees.remove(employeeId);
         employees.put(updatedEmployee.id(), updatedEmployee);
     }
+
+    @Override
+    public void remove(Employee employee) {
+        employees.remove(employee.id());
+    }
 }
