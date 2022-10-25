@@ -50,6 +50,13 @@ class EmployeeServiceTest {
     }
 
     @Test
+    public void request_all_employees_from_store() {
+        employeeService.getAllEmployees();
+
+        then(employeeRepository).should().getAll();
+    }
+
+    @Test
     public void throw_an_exception_if_trying_to_store_a_duplicated_employee() {
         when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
 

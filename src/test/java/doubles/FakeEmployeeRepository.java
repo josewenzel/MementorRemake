@@ -3,7 +3,9 @@ package doubles;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class FakeEmployeeRepository implements EmployeeRepository {
@@ -28,5 +30,12 @@ public class FakeEmployeeRepository implements EmployeeRepository {
     @Override
     public void remove(Employee employee) {
         employees.remove(employee.id());
+    }
+
+    @Override
+    public List<Employee> getAll() {
+        List<Employee> employeesToReturn = new ArrayList<>();
+        employees.forEach((id, employee) -> employeesToReturn.add(employee));
+        return employeesToReturn;
     }
 }

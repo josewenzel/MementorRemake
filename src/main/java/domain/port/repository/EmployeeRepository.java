@@ -2,6 +2,7 @@ package domain.port.repository;
 
 import domain.model.Employee;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface EmployeeRepository {
@@ -12,4 +13,6 @@ public interface EmployeeRepository {
     void update(UUID employeeId, Employee updatedEmployee);
 
     void remove(Employee employee);
+
+    List<Employee> getAll();
 }

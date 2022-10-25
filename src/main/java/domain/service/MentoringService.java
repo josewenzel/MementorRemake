@@ -28,14 +28,14 @@ public class MentoringService {
         return requestedEmployee.mentor();
     }
 
-    private boolean isNotAMember(Employee employee) {
-        return employeeRepository.get(employee) == null;
-    }
-
     public void removeMentor(Employee employee) {
         if (isNotAMember(employee)) throw new EmployeeDoesNotExistsException();
 
         employee.removeMentor();
         employeeRepository.update(employee.id(), employee);
+    }
+
+    private boolean isNotAMember(Employee employee) {
+        return employeeRepository.get(employee) == null;
     }
 }

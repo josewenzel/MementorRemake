@@ -4,6 +4,8 @@ import domain.exception.DuplicateEmployeeException;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
 
+import java.util.List;
+
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
@@ -23,6 +25,10 @@ public class EmployeeService {
 
     public void removeEmployee(Employee employee) {
         employeeRepository.remove(employee);
+    }
+
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.getAll();
     }
 
     private boolean isAMember(Employee employee) {

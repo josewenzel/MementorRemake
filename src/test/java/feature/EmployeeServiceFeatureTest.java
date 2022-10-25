@@ -14,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EmployeeServiceFeatureTest {
 
+    private final Employee ANOTHER_EMPLOYEE = new EmployeeFixture().build();
     private final Employee AN_EMPLOYEE = new EmployeeFixture().build();
     private EmployeeService employeeService;
 
@@ -44,5 +45,13 @@ public class EmployeeServiceFeatureTest {
         employeeService.removeEmployee(AN_EMPLOYEE);
 
         assertThat(employeeService.getEmployee(AN_EMPLOYEE)).isNull();
+    }
+
+    @Test
+    public void retrieves_all_employees() {
+        employeeService.addEmployee(AN_EMPLOYEE);
+        employeeService.addEmployee(ANOTHER_EMPLOYEE);
+
+        assertThat(employeeService.getAllEmployees()).contains(AN_EMPLOYEE, ANOTHER_EMPLOYEE);
     }
 }
