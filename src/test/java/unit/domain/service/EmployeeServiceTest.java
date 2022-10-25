@@ -24,8 +24,8 @@ class EmployeeServiceTest {
 
     @BeforeEach
     void setUp() {
-        employeeService = new EmployeeService(employeeRepository);
         anEmployee = new EmployeeFixture().build();
+        employeeService = new EmployeeService(employeeRepository);
     }
 
     @Test
@@ -36,17 +36,18 @@ class EmployeeServiceTest {
     }
 
     @Test
+    public void throw_an_exception_if_trying_to_store_a_duplicated_employee() {
+        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+
+        assertThatThrownBy(() -> employeeService.addEmployee(anEmployee))
+                .isInstanceOf(DuplicateEmployeeException.class);
+    }
+
+    @Test
     public void request_an_employee_from_the_store() {
         employeeService.getEmployee(anEmployee);
 
         then(employeeRepository).should().get(anEmployee);
-    }
-
-    @Test
-    public void request_an_employee_to_be_removed_from_store() {
-        employeeService.removeEmployee(anEmployee);
-
-        then(employeeRepository).should().remove(anEmployee);
     }
 
     @Test
@@ -57,10 +58,9 @@ class EmployeeServiceTest {
     }
 
     @Test
-    public void throw_an_exception_if_trying_to_store_a_duplicated_employee() {
-        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+    public void request_an_employee_to_be_removed_from_store() {
+        employeeService.removeEmployee(anEmployee);
 
-        assertThatThrownBy(() -> employeeService.addEmployee(anEmployee))
-                .isInstanceOf(DuplicateEmployeeException.class);
+        then(employeeRepository).should().remove(anEmployee);
     }
 }
