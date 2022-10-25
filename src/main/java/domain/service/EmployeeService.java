@@ -1,16 +1,18 @@
 package domain.service;
 
-import domain.exception.DuplicateEmployeeException;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
+import domain.validator.DuplicatedEmployeeValidator;
 
 import java.util.List;
 
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private DuplicatedEmployeeValidator duplicatedEmployeeValidator;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, DuplicatedEmployeeValidator duplicatedEmployeeValidator) {
         this.employeeRepository = employeeRepository;
+        this.duplicatedEmployeeValidator = duplicatedEmployeeValidator;
     }
 
     public Employee getEmployee(Employee employee) {
@@ -18,8 +20,7 @@ public class EmployeeService {
     }
 
     public void addEmployee(Employee employee) {
-        if (isAMember(employee))
-            throw new DuplicateEmployeeException();
+        duplicatedEmployeeValidator.validate(employee);
         employeeRepository.add(employee);
     }
 
@@ -29,9 +30,5 @@ public class EmployeeService {
 
     public List<Employee> getAllEmployees() {
         return employeeRepository.getAll();
-    }
-
-    private boolean isAMember(Employee employee) {
-        return employeeRepository.get(employee) != null;
     }
 }

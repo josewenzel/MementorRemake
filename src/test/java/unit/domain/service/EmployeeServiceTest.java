@@ -4,6 +4,7 @@ import domain.exception.DuplicateEmployeeException;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
 import domain.service.EmployeeService;
+import domain.validator.DuplicatedEmployeeValidator;
 import fixture.EmployeeFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,13 +20,15 @@ import static org.mockito.Mockito.when;
 class EmployeeServiceTest {
     @Mock
     EmployeeRepository employeeRepository;
+    @Mock
+    DuplicatedEmployeeValidator duplicatedEmployeeValidator;
     private EmployeeService employeeService;
     private Employee anEmployee;
 
     @BeforeEach
     void setUp() {
         anEmployee = new EmployeeFixture().build();
-        employeeService = new EmployeeService(employeeRepository);
+        employeeService = new EmployeeService(employeeRepository, duplicatedEmployeeValidator);
     }
 
     @Test
@@ -37,7 +40,8 @@ class EmployeeServiceTest {
 
     @Test
     public void throw_an_exception_if_trying_to_store_a_duplicated_employee() {
-        when(employeeRepository.get(anEmployee)).thenReturn(anEmployee);
+        when(duplicatedEmployeeValidator.validate(anEmployee))
+                .thenThrow(DuplicateEmployeeException.class);
 
         assertThatThrownBy(() -> employeeService.addEmployee(anEmployee))
                 .isInstanceOf(DuplicateEmployeeException.class);

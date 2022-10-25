@@ -11,8 +11,9 @@ public class DuplicatedEmployeeValidator {
         this.employeeRepository = employeeRepository;
     }
 
-    public void validate(Employee anEmployee) {
-        if (employeeRepository.get(anEmployee) != null)
+    public Void validate(Employee employee) {
+        if (employeeRepository.get(employee) != null)
             throw new DuplicateEmployeeException();
+        return null;
     }
 }

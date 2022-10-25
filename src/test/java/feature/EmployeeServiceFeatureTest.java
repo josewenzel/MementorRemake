@@ -4,6 +4,7 @@ import domain.exception.DuplicateEmployeeException;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
 import domain.service.EmployeeService;
+import domain.validator.DuplicatedEmployeeValidator;
 import doubles.FakeEmployeeRepository;
 import fixture.EmployeeFixture;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,8 @@ public class EmployeeServiceFeatureTest {
     @BeforeEach
     void setUp() {
         EmployeeRepository employeeRepository = new FakeEmployeeRepository();
-        employeeService = new EmployeeService(employeeRepository);
+        DuplicatedEmployeeValidator duplicatedEmployeeValidator = new DuplicatedEmployeeValidator(employeeRepository);
+        employeeService = new EmployeeService(employeeRepository, duplicatedEmployeeValidator);
     }
 
     @Test
