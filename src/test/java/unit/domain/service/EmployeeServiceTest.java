@@ -40,8 +40,7 @@ class EmployeeServiceTest {
 
     @Test
     public void throw_an_exception_if_trying_to_store_a_duplicated_employee() {
-        when(duplicatedEmployeeValidator.validate(anEmployee))
-                .thenThrow(DuplicateEmployeeException.class);
+        when(duplicatedEmployeeValidator.validate(anEmployee)).thenThrow(DuplicateEmployeeException.class);
 
         assertThatThrownBy(() -> employeeService.addEmployee(anEmployee))
                 .isInstanceOf(DuplicateEmployeeException.class);

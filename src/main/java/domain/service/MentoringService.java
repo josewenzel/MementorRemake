@@ -1,23 +1,25 @@
 package domain.service;
 
 import domain.exception.EmployeeDoesNotExistsException;
-import domain.exception.MentorDoesNotExistException;
 import domain.exception.SelfMentorException;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
+import domain.validator.EmployeeExistenceValidator;
 
 public class MentoringService {
     private final EmployeeRepository employeeRepository;
+    private final EmployeeExistenceValidator employeeExistenceValidator;
 
-    public MentoringService(EmployeeRepository employeeRepository) {
+    public MentoringService(EmployeeRepository employeeRepository, EmployeeExistenceValidator employeeExistenceValidator) {
         this.employeeRepository = employeeRepository;
+        this.employeeExistenceValidator = employeeExistenceValidator;
     }
 
     public void addMentor(Employee employee, Employee mentor) {
-        // TODO move to validation objects
-        if (isNotAMember(employee)) throw new EmployeeDoesNotExistsException();
-        if (isNotAMember(mentor)) throw new MentorDoesNotExistException();
+        employeeExistenceValidator.validate(employee);
+        employeeExistenceValidator.validate(mentor);
         if (employee == mentor) throw new SelfMentorException();
+
 
         employee.addMentor(mentor);
         employeeRepository.update(employee.id(), employee);
@@ -29,13 +31,9 @@ public class MentoringService {
     }
 
     public void removeMentor(Employee employee) {
-        if (isNotAMember(employee)) throw new EmployeeDoesNotExistsException();
+        employeeExistenceValidator.validate(employee);
 
         employee.removeMentor();
         employeeRepository.update(employee.id(), employee);
-    }
-
-    private boolean isNotAMember(Employee employee) {
-        return employeeRepository.get(employee) == null;
     }
 }

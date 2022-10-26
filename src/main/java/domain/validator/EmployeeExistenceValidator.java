@@ -5,7 +5,7 @@ import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
 
 public class EmployeeExistenceValidator {
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
     public EmployeeExistenceValidator(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
