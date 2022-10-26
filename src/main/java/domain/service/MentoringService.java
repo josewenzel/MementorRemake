@@ -1,6 +1,5 @@
 package domain.service;
 
-import domain.exception.EmployeeDoesNotExistsException;
 import domain.exception.SelfMentorException;
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;

@@ -14,14 +14,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MentoringServiceFeatureTest {
     private final Employee employee = new EmployeeFixture().build();
     private final Employee mentor = new EmployeeFixture().build();
-    private EmployeeExistenceValidator employeeExistenceValidator;
-    private EmployeeRepository employeeRepository;
     private MentoringService mentoringService;
 
     @BeforeEach
     void setUp() {
-        employeeRepository = repositoryWithEmployees();
-        employeeExistenceValidator = new EmployeeExistenceValidator(employeeRepository);
+        EmployeeRepository employeeRepository = repositoryWithEmployees();
+        EmployeeExistenceValidator employeeExistenceValidator = new EmployeeExistenceValidator(employeeRepository);
         mentoringService = new MentoringService(employeeRepository, employeeExistenceValidator);
     }
 

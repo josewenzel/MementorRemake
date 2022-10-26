@@ -15,8 +15,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EmployeeServiceFeatureTest {
 
-    private final Employee ANOTHER_EMPLOYEE = new EmployeeFixture().build();
-    private final Employee AN_EMPLOYEE = new EmployeeFixture().build();
+    private final Employee anEmployee = new EmployeeFixture().build();
+    private final Employee anotherEmployee = new EmployeeFixture().build();
     private EmployeeService employeeService;
 
     @BeforeEach
@@ -28,32 +28,32 @@ public class EmployeeServiceFeatureTest {
 
     @Test
     public void retrieves_an_employee_if_this_exists() {
-        employeeService.addEmployee(AN_EMPLOYEE);
+        employeeService.addEmployee(anEmployee);
 
-        assertThat(employeeService.getEmployee(AN_EMPLOYEE)).isEqualTo(AN_EMPLOYEE);
+        assertThat(employeeService.getEmployee(anEmployee)).isEqualTo(anEmployee);
     }
 
     @Test
     public void disallow_a_new_employee_if_already_exists() {
-        employeeService.addEmployee(AN_EMPLOYEE);
+        employeeService.addEmployee(anEmployee);
 
-        assertThatThrownBy(() -> employeeService.addEmployee(AN_EMPLOYEE))
+        assertThatThrownBy(() -> employeeService.addEmployee(anEmployee))
                 .isInstanceOf(DuplicateEmployeeException.class);
     }
 
     @Test
     public void removes_an_employee() {
-        employeeService.addEmployee(AN_EMPLOYEE);
-        employeeService.removeEmployee(AN_EMPLOYEE);
+        employeeService.addEmployee(anEmployee);
+        employeeService.removeEmployee(anEmployee);
 
-        assertThat(employeeService.getEmployee(AN_EMPLOYEE)).isNull();
+        assertThat(employeeService.getEmployee(anEmployee)).isNull();
     }
 
     @Test
     public void retrieves_all_employees() {
-        employeeService.addEmployee(AN_EMPLOYEE);
-        employeeService.addEmployee(ANOTHER_EMPLOYEE);
+        employeeService.addEmployee(anEmployee);
+        employeeService.addEmployee(anotherEmployee);
 
-        assertThat(employeeService.getAllEmployees()).contains(AN_EMPLOYEE, ANOTHER_EMPLOYEE);
+        assertThat(employeeService.getAllEmployees()).contains(anEmployee, anotherEmployee);
     }
 }
