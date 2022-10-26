@@ -1,4 +1,4 @@
-package feature;
+package feature.domain;
 
 import domain.model.Employee;
 import domain.port.repository.EmployeeRepository;
@@ -34,7 +34,6 @@ public class MentoringServiceFeatureTest {
     @Test
     public void removes_a_mentor_to_an_existing_employee() {
         mentoringService.addMentor(employee, mentor);
-
         mentoringService.removeMentor(employee);
 
         Employee mentorOfEmployee = mentoringService.getMentorOf(employee);

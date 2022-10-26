@@ -19,7 +19,6 @@ public class MentoringService {
         employeeExistenceValidator.validate(mentor);
         if (employee == mentor) throw new SelfMentorException();
 
-
         employee.addMentor(mentor);
         employeeRepository.update(employee.id(), employee);
     }

@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class EmployeeExistenceValidatorShould {
     @Mock
     EmployeeRepository employeeRepository;
-    private Employee anEmployee = new EmployeeFixture().build();
+    private final Employee anEmployee = new EmployeeFixture().build();
 
     @Test
     public void does_not_raise_an_error_if_employee_exists() {

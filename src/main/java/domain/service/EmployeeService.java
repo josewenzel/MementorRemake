@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
-    private DuplicatedEmployeeValidator duplicatedEmployeeValidator;
+    private final DuplicatedEmployeeValidator duplicatedEmployeeValidator;
 
     public EmployeeService(EmployeeRepository employeeRepository, DuplicatedEmployeeValidator duplicatedEmployeeValidator) {
         this.employeeRepository = employeeRepository;

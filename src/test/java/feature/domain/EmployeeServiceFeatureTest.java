@@ -1,4 +1,4 @@
-package feature;
+package feature.domain;
 
 import domain.exception.DuplicateEmployeeException;
 import domain.model.Employee;
