@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,7 +41,7 @@ class EmployeeServiceTest {
 
     @Test
     public void throw_an_exception_if_trying_to_store_a_duplicated_employee() {
-        when(duplicatedEmployeeValidator.validate(anEmployee)).thenThrow(DuplicateEmployeeException.class);
+        doThrow(DuplicateEmployeeException.class).when(duplicatedEmployeeValidator).validate(anEmployee);
 
         assertThatThrownBy(() -> employeeService.addEmployee(anEmployee))
                 .isInstanceOf(DuplicateEmployeeException.class);

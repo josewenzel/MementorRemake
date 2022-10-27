@@ -15,8 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MentoringServiceTest {
@@ -51,8 +50,7 @@ class MentoringServiceTest {
 
     @Test
     public void disallow_mentor_a_non_existent_employee() {
-        when(employeeExistenceValidator.validate(employeeWithMentor))
-                .thenThrow(EmployeeDoesNotExistsException.class);
+        doThrow(EmployeeDoesNotExistsException.class).when(employeeExistenceValidator).validate(employeeWithMentor);
 
         assertThatThrownBy(() -> mentoringService.addMentor(employeeWithMentor, mentor))
                 .isInstanceOf(EmployeeDoesNotExistsException.class);
@@ -61,7 +59,7 @@ class MentoringServiceTest {
     @Test
     public void disallow_to_be_mentored_by_a_non_existent_mentor() {
         doNothing().when(employeeExistenceValidator).validate(employeeWithMentor);
-        when(employeeExistenceValidator.validate(mentor)).thenThrow(EmployeeDoesNotExistsException.class);
+        doThrow(EmployeeDoesNotExistsException.class).when(employeeExistenceValidator).validate(mentor);
 
         assertThatThrownBy(() -> mentoringService.addMentor(employeeWithMentor, mentor))
                 .isInstanceOf(EmployeeDoesNotExistsException.class);
