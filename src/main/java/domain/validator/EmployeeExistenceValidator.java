@@ -12,7 +12,6 @@ public class EmployeeExistenceValidator {
     }
 
     public void validate(Employee employee) {
-        if (employeeRepository.get(employee) == null)
-            throw new EmployeeDoesNotExistsException();
+        if (employeeRepository.get(employee) == null) throw new EmployeeDoesNotExistsException();
     }
 }
